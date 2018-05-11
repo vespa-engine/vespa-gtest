@@ -36,6 +36,7 @@ generation.
 %setup -q -n googletest-release-%{version}
 
 %build
+source /opt/rh/devtoolset-7/enable || true
 mkdir build && cd build
 cmake3 -DBUILD_SHARED_LIBS=ON \
        -DCMAKE_CXX_FLAGS="-std=c++14" \
@@ -48,6 +49,7 @@ cmake3 -DBUILD_SHARED_LIBS=ON \
 make %{?_smp_mflags}
 
 %install
+source /opt/rh/devtoolset-7/enable || true
 cd build
 %make_install
 
