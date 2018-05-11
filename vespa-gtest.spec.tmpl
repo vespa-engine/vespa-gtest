@@ -24,8 +24,6 @@ BuildRequires: cmake3
 BuildRequires: python2-devel
 BuildRequires: devtoolset-7-gcc-c++%{?_isa}
 
-Patch2: patches.predicate.diff
-
 %description
 Framework for writing C++ tests on a variety of platforms (GNU/Linux,
 Mac OS X, Windows, Windows CE, and Symbian). Based on the xUnit
@@ -34,33 +32,24 @@ assertions, user-defined assertions, death tests, fatal and non-fatal
 failures, various options for running the tests, and XML test report
 generation.
 
-
 %prep
-%setup -q -n release-%{version}.tar.gz
-
-
-%define _cxxflags '-std=c++14 -DNOT_BOOST_SPIRIT_THREADSAFE=1 -DNOT_PHOENIX_THREADSAFE=1 -DBOOST_NO_AUTO_PTR=1'
+%setup -q -n googletest-release-%{version}
 
 %build
 mkdir build && cd build
 cmake3 -DBUILD_SHARED_LIBS=ON \
+       -DCMAKE_CXX_FLAGS="-std=c++14" \
        -DPYTHON_EXECUTABLE=%{__python2} \
        -Dgtest_build_tests=ON \
-       -DCMAKE_INSTALL_PREFIX=%{_prefix}
-       -DCMAKE_CXX_FLAGS="-std=c++14"
-       -DCMAKE_INSTALL_RPATH=%{prefix}/lib64
-       -DCMAKE_BUILD_WITH_INSTALL_RPATH=true
+       -DCMAKE_INSTALL_PREFIX=%{_prefix} \
+       -DCMAKE_INSTALL_RPATH=%{_prefix}/lib \
+       -DCMAKE_BUILD_WITH_INSTALL_RPATH=true \
        ..
 make %{?_smp_mflags}
-
 
 %install
 cd build
 %make_install
-
-%check
-cd build
-make test
 
 %files
 %license googletest/LICENSE
@@ -69,6 +58,6 @@ make test
 %doc googletest/samples
 %{_includedir}/gtest/
 %{_includedir}/gmock/
-%{_libdir}/*.so.*
+%{_prefix}/lib/*.so
 
 %changelog
