@@ -53,7 +53,7 @@ cmake3 -DBUILD_SHARED_LIBS=ON \
        -DPYTHON_EXECUTABLE=%{__python2} \
        -Dgtest_build_tests=ON \
        -DCMAKE_INSTALL_PREFIX=%{_prefix} \
-       -DCMAKE_INSTALL_RPATH=%{_prefix}/lib \
+       -DCMAKE_INSTALL_RPATH=%{_prefix}/lib64 \
        -DCMAKE_BUILD_WITH_INSTALL_RPATH=true \
        ..
 make %{?_smp_mflags}
@@ -72,6 +72,6 @@ cd build
 %doc googletest/samples
 %{_includedir}/gtest/
 %{_includedir}/gmock/
-%{_prefix}/lib/*.so
+%{_prefix}/lib64/*
 
 %changelog
